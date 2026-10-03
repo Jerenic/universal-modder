@@ -1,0 +1,19 @@
+# Local user-owned game material
+00_ORIGINALS/
+02_EXTRACTED/
+
+# Large/generated lab output
+lab/
+build/
+dist/
+*.apk
+*.obb
+*.pak
+*.ucas
+*.utoc
+*.uasset
+*.uexp
+
+# Decompiled output
+decomp/
+dumps/

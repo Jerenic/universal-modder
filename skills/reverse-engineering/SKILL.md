@@ -30,6 +30,19 @@ publish them. Offline/single-player only. Never attach debuggers or scanners to 
 **Java** (Minecraft, Slay the Spire...)
 Vineflower / CFR / Recaf. For Minecraft, use Loom `genSources` with Mojang mappings.
 
+**Android / Meta Quest APKs**
+- Preserve the original package backup and work on a copy. Start with `unzip -l`, `aapt2 dump badging`,
+  `apkanalyzer` or `apktool d` to inventory the manifest, resources, `assets/` and native libraries.
+- Split installs may contain `base.apk` plus configuration APKs. Inventory all splits before concluding that
+  an asset or native library is missing.
+- Unity on Quest commonly exposes `lib/arm64-v8a/libunity.so`; IL2CPP builds also have `libil2cpp.so` and a
+  `global-metadata.dat` under the Unity data tree. Mono builds expose managed assemblies instead. Use
+  AssetRipper/UABEA for assets and Cpp2IL/Il2CppDumper for IL2CPP metadata.
+- Unreal Android packages may keep cooked content under `assets/` and/or separate OBB files. Use the Unreal
+  playbook after engine fingerprinting; do not assume the APK alone is the complete install.
+- Java/Kotlin app-side code can be inspected with JADX. Native ARM64 libraries can be loaded in Ghidra/IDA.
+- Do not re-sign or sideload during reconnaissance. First produce an inventory and a reversible lab plan.
+
 **Native C/C++** (custom engines, Unreal game code, console recomps)
 - Ghidra (free) or IDA, driven through MCP so the agent can decompile, rename, retype and follow
   cross-references:

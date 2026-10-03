@@ -1,6 +1,6 @@
 ---
 name: mod-any-game
-description: Mod a PC game the user owns, taking an idea to working in the real game and recorded. It covers new items, weapons, enemies, bosses, units, civilizations, mechanics, art, sound, VR and cross-game mashups. Use when the user wants to mod, extend, hack on, reverse engineer or mash up a game ("add a nuke to Terraria", "make a new civ for Age of Empires", "put Minecraft inside X", "can I mod this game?"). It covers recon (engine, loaders, anti-cheat), choosing the route, a safe lab, a first vertical slice, fal-generated assets, in-game verification and a showcase clip.
+description: Mod a game the user owns, taking an idea to working in the real game and recorded. It covers new items, weapons, enemies, bosses, units, civilizations, mechanics, art, sound, VR and cross-game mashups. Use when the user wants to mod, extend, hack on, reverse engineer or mash up a game ("add a nuke to Terraria", "make a new civ for Age of Empires", "put Minecraft inside X", "can I mod this game?"). It covers recon (engine, loaders, anti-cheat), choosing the route, a safe lab, a first vertical slice, fal-generated assets, in-game verification and a showcase clip.
 ---
 
 # Mod any game
@@ -25,7 +25,7 @@ Otherwise install it once for any agent: `uv tool install git+https://github.com
 
 | Need | Command |
 |---|---|
-| What games are installed, what engine, what anti-cheat, where saves live | `um scan --list`, `um scan "<game>"` |
+| What desktop games are installed, what engine, what anti-cheat, where saves live | `um scan --list`, `um scan "<game>"` |
 | Sprites, textures, PBR, 3D models, rigs, SFX, music, voice, video (fal) | `um fal <recipe>`, or the fal MCP (`search_models`, `run_model`) |
 | Cut out / fit / pixelate / pack sprites; 3D model → sprite frames | `um sprite ...`, `um render3d ...` |
 | Launch, screenshot, click/type, record a Windows game (also from WSL) | `um win ...` |
@@ -52,9 +52,15 @@ Companion skills: **game-recon**, **reverse-engineering**, **fal-assets**, **ass
   another agent left a field note, start from its exact versions, route and gotchas, and don't repeat its
   dead ends. Without `um`, read
   https://github.com/rehan-remade/universal-modder/blob/main/knowledge/INDEX.md.
-- Run `um scan "<game>"`. It reports the engine and version, whether code is managed or native, anti-cheat,
-  mod loaders already installed, save folders, ranked routes, and which playbook in
+- For a desktop install, run `um scan "<game>"`. It reports the engine and version, whether code is managed
+  or native, anti-cheat, mod loaders already installed, save folders, ranked routes, and which playbook in
   `references/engines/` to read. Read that playbook.
+- For an owned offline Android/Quest backup, **do not force it through `um scan`**. Read
+  `references/platforms/android-quest.md`, inventory the base/split APKs and optional OBB/data, fingerprint
+  the engine from package contents, and record the source package/version before choosing an engine playbook.
+- If one owned game is a **reference** and another is the **target**, also read
+  `references/workflows/reference-target.md`; keep their recon, extracted artifacts and verification logs
+  separate so reference assets never accidentally become shipped mod content.
 - Research the community as it is now: the wiki's modding page, Nexus / Thunderstore / mod.io / Workshop,
   GitHub, and the loader's current release and install steps. Versions move, so don't install from memory.
   If the community already has a loader (tModLoader, SMAPI, BepInEx, UE4SS, REFramework, SKSE, Fabric),
@@ -74,6 +80,8 @@ Companion skills: **game-recon**, **reverse-engineering**, **fal-assets**, **ass
 Write the chosen route and the reason into MODLOG.md before building.
 
 ### 3. Lab setup (the safety net)
+- Keep acquisition/source backups immutable. For APK/Quest work, preserve the original SideQuest/ADB backup
+  byte-for-byte and do all extraction/repacking in a separate working copy.
 - Before the first modded launch, run `um backup create "<saves folder>" --name <game>-saves` (the paths come
   from `um scan`). Snapshot the config/profile folder too if you'll change settings.
 - Use a separate lab profile or save folder when the loader allows it (tModLoader
@@ -179,6 +187,8 @@ documented dead end saves the next agent hours.
     Ren'Py, Paradox, Doom, HTML5, LÖVE, Java);
   - single games and retro: `minecraft.md`, `genie-aoe2.md`, `retro-decomp.md`.
 - `references/case-studies.md`: Terraria, AoE2 and Minecraft × GTA V end to end, every non-obvious fact.
+- `references/platforms/android-quest.md`: owned Quest/Android APK backups, split APKs, OBB/data, engine fingerprinting and safe labs.
+- `references/workflows/reference-target.md`: learn from one owned game while building original/recreated content for another target game.
 - The knowledge base (`knowledge/` at the repo root; `um kb search`): field notes by many agents, per game
   and per technique.
 - `references/safety.md`: the rules with their reasons, anti-cheat and legal hygiene.

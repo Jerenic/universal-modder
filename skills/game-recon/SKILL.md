@@ -1,6 +1,6 @@
 ---
 name: game-recon
-description: Figure out how a specific installed game can be modded, before writing any mod code. Covers where it's installed, the engine and version, managed vs native code, anti-cheat, loaders already present, save and config folders, and the community's modding route. Use when the user asks "can I mod <game>?", "what engine is <game>", "how do people mod <game>", or at the start of any modding task. Produces MODDING_PLAN.md.
+description: Figure out how a specific installed game or owned package backup can be modded, before writing any mod code. Covers where it's installed, the engine and version, managed vs native code, anti-cheat, loaders already present, save and config folders, and the community's modding route. Use when the user asks "can I mod <game>?", "what engine is <game>", "how do people mod <game>", or at the start of any modding task. Produces MODDING_PLAN.md.
 ---
 
 # Game recon
@@ -13,6 +13,8 @@ so every later step can rely on it.
 working versions, the route, and the gotchas before you touch anything. See the **share-field-notes** skill.
 
 ## 1. Find it and fingerprint it
+
+### Desktop/store install
 ```bash
 um scan --list                 # Steam, Epic and Xbox installs (Windows, WSL, Linux, macOS)
 um scan "<name or folder>"     # engine, version, exes (.NET?), anti-cheat, loaders, mod folders, saves, routes
@@ -24,6 +26,13 @@ um scan "<game>" --json        # the same, machine-readable
 `um scan` reads files only. It indexes the install (bounded), sniffs PE headers, the Unity/Godot/GameMaker
 headers and the Unreal version string, maps known games to their community loader, and points to the
 playbook to read: `skills/mod-any-game/references/engines/<engine>.md`.
+
+### Android / Meta Quest package backup
+`um scan` is not the source of truth for APK backups. Read
+`skills/mod-any-game/references/platforms/android-quest.md` and inventory the backup directly: base APK,
+split APKs, manifest, `lib/<abi>/`, engine data, and any matching `/sdcard/Android/obb/<package>` or
+`/sdcard/Android/data/<package>` content. Record the package id and version before extraction. Keep the
+original backup immutable.
 
 The scan can't see everything, so check these by hand:
 - **Game not in a store library** (GOG, itch, a standalone folder): pass the folder path.
@@ -54,7 +63,8 @@ Capture: the loader's name, repo, **current version and install steps**, the gam
 ## 4. Write MODDING_PLAN.md
 ```markdown
 # <Game> modding plan
-- Install: <path> (<store> <appid>), version <x>
+- Source: <desktop install | Quest/Android package backup>
+- Install / backup: <path> (<store/appid or package id>), version <x>
 - Engine: <engine + version>, code: managed .NET / IL2CPP / native, 64-bit
 - Anti-cheat / online: <none | what + verdict>
 - Saves: <path>   Config: <path>   Logs: <path>

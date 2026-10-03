@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <b>Skills, tools and a shared knowledge base that let any AI coding agent mod almost any PC game you own.</b><br>
+  <b>Skills, tools and a shared knowledge base that let any AI coding agent mod almost any game you own — desktop or an owned offline Android/Quest package backup.</b><br>
   Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode, or anything that reads <code>AGENTS.md</code>.<br>
   The agent finds the game, works out the engine and the route, reads the real code, builds the mod, makes art, 3D and sound
   with <a href="https://fal.ai">fal</a>, tests it in the running game, cuts the video, and writes down what it learned for the next agent.
@@ -38,6 +38,11 @@ Inside a clone, each agent finds the skills where it looks for them: `.agents/sk
 `.claude/skills`, `.gemini/skills` and `.github/skills` all link to `skills/`. Instructions are in
 `AGENTS.md`, which `CLAUDE.md` and `GEMINI.md` point to. MCP config is in `.mcp.json`, `.codex/config.toml`,
 `.cursor/mcp.json` and `.vscode/mcp.json`.
+
+**Quest / Android package backups.** `um scan` currently targets desktop installs. For an owned offline
+Quest/Android backup, start with `skills/mod-any-game/references/platforms/android-quest.md`: keep the
+original backup immutable, inventory base/split APKs plus optional OBB/data, fingerprint the engine, then
+continue through the normal recon → lab → source-of-truth loop.
 
 **The `um` CLI.** Plugin installs and clones put it on PATH. Anywhere else:
 ```bash
@@ -100,7 +105,7 @@ and an honest status and verification.
 
 | Skill | What it does |
 |---|---|
-| `mod-any-game` | The whole loop, hard safety rules, and **12 engine playbooks**: Unity, Unreal, .NET/XNA (Terraria, Stardew, Celeste), Godot, Source 1/2, Bethesda, Minecraft, AoE2/Genie, RE Engine/FromSoft/GTA/Cyberpunk/BG3, native C++, indie engines (GameMaker, RPG Maker, Ren'Py, Paradox, Doom, HTML5, LÖVE, Java), retro decomps |
+| `mod-any-game` | The whole loop, hard safety rules, **12 engine playbooks**, plus platform/workflow playbooks for owned Quest/Android backups and reference-game → target-game projects |
 | `game-recon` | Prior field notes, engine and version, managed or native, anti-cheat, loaders, save folders, community route → `MODDING_PLAN.md` |
 | `reverse-engineering` | ILSpy / Cpp2IL / Vineflower / Ghidra and IDA over MCP / Cheat Engine / Frida / RenderDoc; reverse-engineer a file format and prove it with a round trip |
 | `fal-assets` | Sprites with real transparency, consistent variants, pixel art, seamless textures, PBR maps, image-to-3D, auto-rigging, SFX, music, voice, cutscene video |
